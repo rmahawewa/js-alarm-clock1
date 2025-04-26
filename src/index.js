@@ -24,20 +24,28 @@ clickButton.addEventListener("click", function(){ // this is a call back functio
     console.log(formattedDateNow);
     console.log(formattedFutureDate);
     console.log(getDifferenceInMilliseconds(formattedDateNow,formattedFutureDate));
-    const timeDiff = getDifferenceInMilliseconds(formattedDateNow,formattedFutureDate);
+    const timeDiff = getDifferenceInMilliseconds(formattedDateNow,formattedFutureDate);   
+
     const timeDiff2 = Math.max(0, timeDiff) + 4000;
     console.log(typeof(timeDiff));
-    
-    get_message(name, timeDiff).then((msg) => {
-        message.textContent=msg;
-    });
 
-    secondAlarm(name, timeDiff2).then((msg) => {
-        message1.textContent=msg;
-    });
+    if(timeDiff < 0){
+        message.textContent = "Please select a future value";
+        document.getElementById("alarm_time").value = "";
+    }else{
+        get_message(name, timeDiff).then((msg) => {
+            message.textContent=msg;
+        });
+    
+        secondAlarm(name, timeDiff2).then((msg) => {
+            message1.textContent=msg;
+        });
+    }   
+    
 });
 
 resetButton.addEventListener("click", function(){
     document.getElementById("name").value = "";
-    document.getElementById("alarm_time").value = "";
+    const dateTimeNow = new Date();
+    document.getElementById("alarm_time").value = format(dateTimeNow, 'yyyy-MM-dd\'T\'hh:mm', { locale: enGB });
 });
